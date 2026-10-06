@@ -3,17 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grade 6 Integer Multiplication: Atomic Charge Simulator</title>
+  <title>Grade 6: Grouping Integer Multiplication Activity</title>
   <style>
     :root {
       --bg-color: #0f172a;
       --card-bg: #1e293b;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --positive-color: #ef4444;
-      --positive-glow: rgba(239, 68, 68, 0.4);
-      --negative-color: #3b82f6;
-      --negative-glow: rgba(59, 130, 246, 0.4);
+      --proton-color: #ef4444;
+      --electron-color: #3b82f6;
       --accent: #10b981;
       --border-radius: 12px;
     }
@@ -37,13 +35,12 @@
 
     header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     h1 {
       font-size: 1.8rem;
       margin-bottom: 6px;
-      color: #f1f5f9;
     }
 
     p.subtitle {
@@ -53,20 +50,29 @@
 
     .container {
       width: 100%;
-      max-width: 900px;
+      max-width: 950px;
       background: var(--card-bg);
       border-radius: var(--border-radius);
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
+    }
+
+    .instructions-card {
+      background: #020617;
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: #cbd5e1;
     }
 
     .workspace {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 16px;
     }
 
     @media (min-width: 768px) {
@@ -89,13 +95,13 @@
     canvas {
       display: block;
       width: 100%;
-      height: 380px;
+      height: 420px;
     }
 
     .controls-panel {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       background: #0f172a;
       padding: 16px;
       border-radius: var(--border-radius);
@@ -105,12 +111,12 @@
     .control-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     label {
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 0.8rem;
+      font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -123,110 +129,22 @@
 
     .btn {
       flex: 1;
-      padding: 10px 12px;
+      padding: 8px 10px;
       border: 1px solid #475569;
       background: #1e293b;
       color: var(--text-main);
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
     }
 
-    .btn:hover {
-      background: #334155;
-    }
-
-    .btn.active-add {
-      background: #15803d;
-      border-color: #22c55e;
-      color: white;
-    }
-
-    .btn.active-remove {
-      background: #b91c1c;
-      border-color: #ef4444;
-      color: white;
-    }
-
-    .btn.active-proton {
-      background: #b91c1c;
-      border-color: #ef4444;
-      color: white;
-    }
-
-    .btn.active-electron {
-      background: #1d4ed8;
-      border-color: #3b82f6;
-      color: white;
-    }
-
-    .action-btn {
-      background: var(--accent);
-      color: #020617;
-      border: none;
-      padding: 12px;
-      font-size: 1rem;
-      font-weight: 700;
-      margin-top: 8px;
-    }
-
-    .action-btn:hover {
-      background: #34d399;
-      transform: translateY(-1px);
-    }
-
-    .action-btn:disabled {
-      background: #475569;
-      color: #94a3b8;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .reset-btn {
-      background: transparent;
-      border: 1px dashed #475569;
-      color: var(--text-muted);
-    }
-
-    .reset-btn:hover {
-      background: rgba(255,255,255,0.05);
-      color: var(--text-main);
-    }
-
-    .equation-bar {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: var(--border-radius);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-align: center;
-    }
-
-    .equation-display {
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    .pos-text { color: #ef4444; }
-    .neg-text { color: #3b82f6; }
-    .neutral-text { color: #10b981; }
-
-    .explanation {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      max-width: 600px;
-    }
+    .btn:hover { background: #334155; }
+    .btn.active-add { background: #15803d; border-color: #22c55e; color: white; }
+    .btn.active-remove { background: #b91c1c; border-color: #ef4444; color: white; }
+    .btn.active-proton { background: #b91c1c; border-color: #ef4444; color: white; }
+    .btn.active-electron { background: #1d4ed8; border-color: #3b82f6; color: white; }
 
     .select-input {
       padding: 8px 12px;
@@ -237,19 +155,75 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    .action-btn {
+      background: var(--accent);
+      color: #020617;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    .action-btn:hover { background: #34d399; }
+    .action-btn:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; }
+
+    .reset-btn {
+      background: transparent;
+      border: 1px dashed #475569;
+      color: var(--text-muted);
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .equation-bar {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: var(--border-radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .equation-display {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .pos-text { color: var(--proton-color); }
+    .neg-text { color: var(--electron-color); }
+    .neutral-text { color: var(--accent); }
+
+    .explanation {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Atomic Charge Integer Multiplier</h1>
-    <p class="subtitle">Grade 6: Learning Integer Multiplication through Adding and Removing Charges</p>
+    <h1>Interactive Grouping: Integer Multiplier</h1>
+    <p class="subtitle">Grade 6: Build Equal Charge Groups to Discover Multiplication Rules</p>
   </header>
 
   <div class="container">
+    <div class="instructions-card" id="instructionsText">
+      <strong>Step 1:</strong> Select your Action (ADD or REMOVE) and Charge Type. <br>
+      <strong>Step 2:</strong> Click & Drag particles into the Group Trays to assemble equal groups before clicking Apply!
+    </div>
+
     <div class="workspace">
       <div class="canvas-container">
-        <canvas id="simCanvas" width="550" height="380"></canvas>
+        <canvas id="simCanvas" width="580" height="420"></canvas>
       </div>
 
       <div class="controls-panel">
@@ -263,7 +237,7 @@
 
         <div class="control-group">
           <label>2. Number of Groups</label>
-          <select id="groupCountSelect" class="select-input" onchange="updateGroupCount()">
+          <select id="groupCountSelect" class="select-input" onchange="setupGroups()">
             <option value="1">1 Group</option>
             <option value="2">2 Groups</option>
             <option value="3" selected>3 Groups</option>
@@ -272,15 +246,15 @@
         </div>
 
         <div class="control-group">
-          <label>3. Particle Type (Charge per Group)</label>
+          <label>3. Particle Type per Group</label>
           <div class="btn-group">
             <button class="btn active-proton" id="btnParticleProton" onclick="setParticle(4)">Protons (+4)</button>
             <button class="btn" id="btnParticleElectron" onclick="setParticle(-4)">Electrons (-4)</button>
           </div>
         </div>
 
-        <button class="btn action-btn" id="btnExecute" onclick="executeAction()">Apply Action!</button>
-        <button class="btn reset-btn" onclick="resetAtom()">Reset Atom to Neutral (0)</button>
+        <button class="action-btn" id="btnExecute" onclick="executeGroupedAction()">Apply Grouped Action!</button>
+        <button class="reset-btn" onclick="resetAtom()">Reset Atom to Neutral (0)</button>
       </div>
     </div>
 
@@ -289,7 +263,7 @@
         (<span class="pos-text">+3</span>) &times; (<span class="pos-text">+4</span>) = <span class="pos-text">+12</span>
       </div>
       <div class="explanation" id="explanationText">
-        Adding 3 groups of +4 protons increases net charge by +12.
+        Adding 3 groups of 4 Protons (+4) increases net charge by +12.
       </div>
     </div>
   </div>
@@ -315,33 +289,33 @@
       } catch (e) {}
     }
 
-    // Simulation State
-    let actionSign = 1; // +1 = Add, -1 = Remove
-    let groupCount = 3; 
-    let particleValue = 4; // +4 = Protons, -4 = Electrons
-    let currentNetCharge = 0;
-    let particles = [];
-    let isAnimating = false;
-
-    // DOM Elements
+    // Canvas Setup & Drag State
     const canvas = document.getElementById('simCanvas');
     const ctx = canvas.getContext('2d');
-    const equationDisplay = document.getElementById('equationDisplay');
-    const explanationText = document.getElementById('explanationText');
-    const btnExecute = document.getElementById('btnExecute');
 
-    // Sphere boundaries
-    const atomCenter = { x: 275, y: 190 };
-    const atomRadius = 130;
+    let actionSign = 1; // +1 = Add, -1 = Remove
+    let groupCount = 3;
+    let particleValue = 4; // +4 or -4
+    let isAnimating = false;
+
+    // Spatial boundaries
+    const atomCenter = { x: 380, y: 210 };
+    const atomRadius = 120;
+
+    let atomParticles = [];
+    let draggableParticles = [];
+    let groupTrays = [];
+    let draggedParticle = null;
 
     class Particle {
-      constructor(x, y, type) {
+      constructor(x, y, type, isDraggable = false) {
         this.x = x;
         this.y = y;
-        this.type = type; // 'proton' (+) or 'electron' (-)
-        this.radius = 11;
-        this.vx = (Math.random() - 0.5) * 0.8;
-        this.vy = (Math.random() - 0.5) * 0.8;
+        this.type = type; // 'proton' or 'electron'
+        this.radius = 10;
+        this.isDraggable = isDraggable;
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
         this.targetX = x;
         this.targetY = y;
         this.alpha = 1;
@@ -356,17 +330,18 @@
           return;
         }
 
-        // Slight drift within atom sphere
-        this.x += this.vx;
-        this.y += this.vy;
+        if (!this.isDraggable) {
+          this.x += this.vx;
+          this.y += this.vy;
 
-        const dist = Math.hypot(this.x - atomCenter.x, this.y - atomCenter.y);
-        if (dist > atomRadius - this.radius) {
-          const angle = Math.atan2(this.y - atomCenter.y, this.x - atomCenter.x);
-          this.x = atomCenter.x + Math.cos(angle) * (atomRadius - this.radius);
-          this.y = atomCenter.y + Math.sin(angle) * (atomRadius - this.radius);
-          this.vx *= -1;
-          this.vy *= -1;
+          const dist = Math.hypot(this.x - atomCenter.x, this.y - atomCenter.y);
+          if (dist > atomRadius - this.radius) {
+            const angle = Math.atan2(this.y - atomCenter.y, this.x - atomCenter.x);
+            this.x = atomCenter.x + Math.cos(angle) * (atomRadius - this.radius);
+            this.y = atomCenter.y + Math.sin(angle) * (atomRadius - this.radius);
+            this.vx *= -1;
+            this.vy *= -1;
+          }
         }
       }
 
@@ -383,12 +358,11 @@
           ctx.fillStyle = '#3b82f6';
           ctx.shadowColor = '#3b82f6';
         }
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
         ctx.fill();
 
-        // Draw Sign
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 14px sans-serif';
+        ctx.font = 'bold 12px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(this.type === 'proton' ? '+' : '−', this.x, this.y);
@@ -397,19 +371,17 @@
     }
 
     function initNeutralAtom() {
-      particles = [];
-      // Create 8 balanced pairs (+ and -) to represent neutral 0
-      for (let i = 0; i < 8; i++) {
+      atomParticles = [];
+      for (let i = 0; i < 6; i++) {
         const pPos = getRandomSpherePos();
-        particles.push(new Particle(pPos.x, pPos.y, 'proton'));
+        atomParticles.push(new Particle(pPos.x, pPos.y, 'proton'));
         const ePos = getRandomSpherePos();
-        particles.push(new Particle(ePos.x, ePos.y, 'electron'));
+        atomParticles.push(new Particle(ePos.x, ePos.y, 'electron'));
       }
-      currentNetCharge = 0;
     }
 
     function getRandomSpherePos() {
-      const r = Math.random() * (atomRadius - 25);
+      const r = Math.random() * (atomRadius - 20);
       const theta = Math.random() * Math.PI * 2;
       return {
         x: atomCenter.x + r * Math.cos(theta),
@@ -417,13 +389,41 @@
       };
     }
 
-    // UI Input Handler Functions
+    function setupGroups() {
+      if (isAnimating) return;
+      groupCount = parseInt(document.getElementById('groupCountSelect').value);
+      groupTrays = [];
+      draggableParticles = [];
+
+      const trayWidth = 110;
+      const trayHeight = 70;
+      const startY = 30;
+      const gapY = 90;
+
+      const pType = particleValue > 0 ? 'proton' : 'electron';
+
+      for (let i = 0; i < groupCount; i++) {
+        const trayX = 20;
+        const trayY = startY + i * gapY;
+        groupTrays.push({ x: trayX, y: trayY, w: trayWidth, h: trayHeight, label: `Group ${i + 1}` });
+
+        // Generate 4 particles per tray initially near tray
+        for (let j = 0; j < 4; j++) {
+          const px = trayX + 20 + (j % 2) * 25;
+          const py = trayY + 25 + Math.floor(j / 2) * 25;
+          draggableParticles.push(new Particle(px, py, pType, true));
+        }
+      }
+      updatePreviewEquation();
+    }
+
+    // Controls Handling
     function setAction(sign) {
       if (isAnimating) return;
       actionSign = sign;
       document.getElementById('btnActionAdd').className = `btn ${sign === 1 ? 'active-add' : ''}`;
       document.getElementById('btnActionRemove').className = `btn ${sign === -1 ? 'active-remove' : ''}`;
-      updatePreviewEquation();
+      setupGroups();
     }
 
     function setParticle(val) {
@@ -431,170 +431,195 @@
       particleValue = val;
       document.getElementById('btnParticleProton').className = `btn ${val > 0 ? 'active-proton' : ''}`;
       document.getElementById('btnParticleElectron').className = `btn ${val < 0 ? 'active-electron' : ''}`;
-      updatePreviewEquation();
-    }
-
-    function updateGroupCount() {
-      if (isAnimating) return;
-      groupCount = parseInt(document.getElementById('groupCountSelect').value);
-      updatePreviewEquation();
+      setupGroups();
     }
 
     function updatePreviewEquation() {
       const multStr = actionSign > 0 ? `+${groupCount}` : `-${groupCount}`;
-      const partStr = particleValue > 0 ? `+${particleValue}` : `${particleValue}`;
-      const resultVal = (actionSign * groupCount) * particleValue;
+      const partStr = particleValue > 0 ? `+${Math.abs(particleValue)}` : `-${Math.abs(particleValue)}`;
+      const resultVal = (actionSign * groupCount) * Math.abs(particleValue);
       const resStr = resultVal > 0 ? `+${resultVal}` : `${resultVal}`;
 
       const multClass = actionSign > 0 ? 'pos-text' : 'neg-text';
       const partClass = particleValue > 0 ? 'pos-text' : 'neg-text';
       const resClass = resultVal > 0 ? 'pos-text' : (resultVal < 0 ? 'neg-text' : 'neutral-text');
 
-      equationDisplay.innerHTML = `(<span class="${multClass}">${multStr}</span>) &times; (<span class="${partClass}">${partStr}</span>) = <span class="${resClass}">${resStr}</span>`;
+      document.getElementById('equationDisplay').innerHTML = 
+        `(<span class="${multClass}">${multStr}</span>) &times; (<span class="${partClass}">${partStr}</span>) = <span class="${resClass}">${resStr}</span>`;
 
       let exp = "";
-      if (actionSign > 0 && particleValue > 0) exp = `Adding ${groupCount} groups of Protons (+4) increases net charge by +${resultVal}.`;
-      else if (actionSign > 0 && particleValue < 0) exp = `Adding ${groupCount} groups of Electrons (-4) decreases net charge to ${resultVal}.`;
-      else if (actionSign < 0 && particleValue > 0) exp = `Removing ${groupCount} groups of Protons (+4) leaves more negative charge, bringing net charge to ${resultVal}.`;
-      else exp = `Removing ${groupCount} groups of Electrons (-4) eliminates negative charge, causing net charge to jump to +${resultVal}!`;
+      if (actionSign > 0 && particleValue > 0) exp = `Adding ${groupCount} groups of +4 Protons increases net charge by +${resultVal}.`;
+      else if (actionSign > 0 && particleValue < 0) exp = `Adding ${groupCount} groups of -4 Electrons decreases net charge to ${resultVal}.`;
+      else if (actionSign < 0 && particleValue > 0) exp = `Removing ${groupCount} groups of +4 Protons leaves excess negative charge, making net charge ${resultVal}.`;
+      else exp = `Removing ${groupCount} groups of -4 Electrons removes negative weight, making net charge jump to +${resultVal}!`;
 
-      explanationText.innerText = exp;
+      document.getElementById('explanationText').innerText = exp;
     }
 
-    function executeAction() {
+    // Drag and Drop Logic
+    canvas.addEventListener('mousedown', (e) => {
+      if (isAnimating) return;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      draggableParticles.forEach(p => {
+        const dist = Math.hypot(p.x - mouseX, p.y - mouseY);
+        if (dist < p.radius + 5) {
+          draggedParticle = p;
+        }
+      });
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (draggedParticle) {
+        const rect = canvas.getBoundingClientRect();
+        draggedParticle.x = e.clientX - rect.left;
+        draggedParticle.y = e.clientY - rect.top;
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      if (draggedParticle) {
+        playTone(500, 'sine', 0.05);
+        draggedParticle = null;
+      }
+    });
+
+    function executeGroupedAction() {
       if (isAnimating) return;
       isAnimating = true;
-      btnExecute.disabled = true;
+      document.getElementById('btnExecute').disabled = true;
 
-      const numParticlesToChange = groupCount * 4;
       const targetType = particleValue > 0 ? 'proton' : 'electron';
+      const totalCount = groupCount * 4;
 
       if (actionSign > 0) {
-        // ADD particles
-        let added = 0;
-        const addInterval = setInterval(() => {
-          const pos = getRandomSpherePos();
-          particles.push(new Particle(pos.x, pos.y, targetType));
-          playTone(targetType === 'proton' ? 440 : 220, 'sine');
-          added++;
-          if (added >= numParticlesToChange) {
-            clearInterval(addInterval);
+        // Animate grouped particles moving INTO atom
+        let index = 0;
+        const interval = setInterval(() => {
+          if (index < draggableParticles.length) {
+            const p = draggableParticles[index];
+            const targetPos = getRandomSpherePos();
+            p.isDraggable = false;
+            p.x = targetPos.x;
+            p.y = targetPos.y;
+            atomParticles.push(p);
+            playTone(targetType === 'proton' ? 480 : 240, 'sine');
+            index++;
+          } else {
+            clearInterval(interval);
+            draggableParticles = [];
             finishExecution();
           }
-        }, 120);
+        }, 80);
       } else {
-        // REMOVE particles
-        const matchingParticles = particles.filter(p => p.type === targetType && !p.isRemoving);
-        const toRemoveCount = Math.min(numParticlesToChange, matchingParticles.length);
-        
-        let removed = 0;
-        if (toRemoveCount === 0) {
-          finishExecution();
-          return;
-        }
+        // REMOVE: Animate particles sucking OUT of atom
+        const matching = atomParticles.filter(p => p.type === targetType && !p.isRemoving);
+        const toRemove = Math.min(totalCount, matching.length);
 
-        const removeInterval = setInterval(() => {
-          if (removed < toRemoveCount) {
-            const p = matchingParticles[removed];
+        let removed = 0;
+        const interval = setInterval(() => {
+          if (removed < toRemove) {
+            const p = matching[removed];
             p.isRemoving = true;
-            // Target animation outside canvas
-            p.targetX = p.x < atomCenter.x ? -50 : canvas.width + 50;
+            p.targetX = -50;
             p.targetY = p.y;
-            playTone(targetType === 'proton' ? 300 : 550, 'triangle');
+            playTone(targetType === 'proton' ? 300 : 580, 'triangle');
             removed++;
           } else {
-            clearInterval(removeInterval);
+            clearInterval(interval);
             setTimeout(() => {
-              particles = particles.filter(p => !p.isRemoving || p.alpha > 0);
+              atomParticles = atomParticles.filter(p => !p.isRemoving || p.alpha > 0);
               finishExecution();
             }, 300);
           }
-        }, 120);
+        }, 80);
       }
     }
 
     function finishExecution() {
-      // Calculate current net charge
-      const protons = particles.filter(p => p.type === 'proton' && !p.isRemoving).length;
-      const electrons = particles.filter(p => p.type === 'electron' && !p.isRemoving).length;
-      currentNetCharge = protons - electrons;
-
-      playTone(currentNetCharge >= 0 ? 660 : 180, 'square', 0.25);
       isAnimating = false;
-      btnExecute.disabled = false;
+      document.getElementById('btnExecute').disabled = false;
+      playTone(660, 'square', 0.2);
     }
 
     function resetAtom() {
       if (isAnimating) return;
       initNeutralAtom();
-      updatePreviewEquation();
+      setupGroups();
     }
 
     // Render Loop
     function render() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Draw Group Trays
+      groupTrays.forEach(tray => {
+        ctx.fillStyle = 'rgba(30, 41, 59, 0.7)';
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(tray.x, tray.y, tray.w, tray.h);
+        ctx.fillRect(tray.x, tray.y, tray.w, tray.h);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillText(tray.label, tray.x + 8, tray.y + 16);
+      });
+
       // Calculate Net Charge
-      const activeProtons = particles.filter(p => p.type === 'proton' && !p.isRemoving).length;
-      const activeElectrons = particles.filter(p => p.type === 'electron' && !p.isRemoving).length;
+      const activeProtons = atomParticles.filter(p => p.type === 'proton' && !p.isRemoving).length;
+      const activeElectrons = atomParticles.filter(p => p.type === 'electron' && !p.isRemoving).length;
       const net = activeProtons - activeElectrons;
 
-      // Draw Atom Outer Shell (Glows based on charge)
+      // Draw Atom Sphere
       ctx.save();
       ctx.beginPath();
       ctx.arc(atomCenter.x, atomCenter.y, atomRadius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
       ctx.fill();
       ctx.lineWidth = 3;
 
-      if (net > 0) {
-        ctx.strokeStyle = '#ef4444';
-        ctx.shadowColor = '#ef4444';
-      } else if (net < 0) {
-        ctx.strokeStyle = '#3b82f6';
-        ctx.shadowColor = '#3b82f6';
-      } else {
-        ctx.strokeStyle = '#10b981';
-        ctx.shadowColor = '#10b981';
-      }
-      ctx.shadowBlur = 15;
+      if (net > 0) { ctx.strokeStyle = '#ef4444'; ctx.shadowColor = '#ef4444'; }
+      else if (net < 0) { ctx.strokeStyle = '#3b82f6'; ctx.shadowColor = '#3b82f6'; }
+      else { ctx.strokeStyle = '#10b981'; ctx.shadowColor = '#10b981'; }
+      ctx.shadowBlur = 12;
       ctx.stroke();
       ctx.restore();
 
-      // Draw Voltmeter / Charge Meter on the side
+      // Draw Charge Gauge
       drawMeter(net);
 
-      // Draw Particles
-      particles.forEach(p => {
+      // Draw Particles inside Atom
+      atomParticles.forEach(p => {
         p.update();
         p.draw();
       });
+
+      // Draw Draggable Grouping Particles
+      draggableParticles.forEach(p => p.draw());
 
       requestAnimationFrame(render);
     }
 
     function drawMeter(netCharge) {
-      const meterX = 30;
-      const meterY = 50;
-      const meterWidth = 24;
+      const meterX = 520;
+      const meterY = 60;
+      const meterWidth = 20;
       const meterHeight = 280;
 
-      // Meter Background
       ctx.fillStyle = '#0f172a';
       ctx.fillRect(meterX, meterY, meterWidth, meterHeight);
       ctx.strokeStyle = '#475569';
       ctx.lineWidth = 2;
       ctx.strokeRect(meterX, meterY, meterWidth, meterHeight);
 
-      // Zero Line
       const zeroY = meterY + meterHeight / 2;
       ctx.strokeStyle = '#94a3b8';
       ctx.beginPath();
-      ctx.moveTo(meterX - 5, zeroY);
-      ctx.lineTo(meterX + meterWidth + 5, zeroY);
+      ctx.moveTo(meterX - 4, zeroY); ctx.lineTo(meterX + meterWidth + 4, zeroY);
       ctx.stroke();
 
-      // Meter Level Fill
       const maxVal = 20;
       const clampedNet = Math.max(-maxVal, Math.min(maxVal, netCharge));
       const fillHeight = (clampedNet / maxVal) * (meterHeight / 2);
@@ -602,25 +627,16 @@
       ctx.fillStyle = netCharge >= 0 ? '#ef4444' : '#3b82f6';
       ctx.fillRect(meterX + 2, zeroY, meterWidth - 4, -fillHeight);
 
-      // Meter Labels
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = '10px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillText('+20', meterX + meterWidth + 8, meterY + 10);
-      ctx.fillText('0', meterX + meterWidth + 8, zeroY + 3);
-      ctx.fillText('-20', meterX + meterWidth + 8, meterY + meterHeight - 5);
-
-      // Digital Net Charge Readout
       ctx.fillStyle = '#f8fafc';
-      ctx.font = 'bold 14px sans-serif';
+      ctx.font = 'bold 12px sans-serif';
       ctx.textAlign = 'center';
       const netStr = netCharge > 0 ? `+${netCharge}` : `${netCharge}`;
-      ctx.fillText(`Net: ${netStr}`, meterX + 12, meterY - 15);
+      ctx.fillText(`Net: ${netStr}`, meterX + 10, meterY - 12);
     }
 
     // Initialize
     initNeutralAtom();
-    updatePreviewEquation();
+    setupGroups();
     render();
   </script>
 </body>
