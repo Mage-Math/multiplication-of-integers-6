@@ -3,641 +3,663 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grade 6: Grouping Integer Multiplication Activity</title>
+  <title>Chip Multiplication: Pattern Explorer for Grade 6</title>
   <style>
     :root {
-      --bg-color: #0f172a;
+      --bg: #0f172a;
       --card-bg: #1e293b;
-      --text-main: #f8fafc;
+      --text: #f8fafc;
       --text-muted: #94a3b8;
-      --proton-color: #ef4444;
-      --electron-color: #3b82f6;
+      --red-chip: #ef4444;
+      --red-chip-glow: rgba(239, 68, 68, 0.4);
+      --blue-chip: #3b82f6;
+      --blue-chip-glow: rgba(59, 130, 246, 0.4);
       --accent: #10b981;
-      --border-radius: 12px;
+      --accent-glow: rgba(16, 185, 129, 0.4);
+      --gold: #f59e0b;
+      --radius: 16px;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      user-select: none;
     }
 
     body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      padding: 16px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 16px;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 6px;
-    }
-
-    p.subtitle {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .container {
+      margin-bottom: 12px;
       width: 100%;
-      max-width: 950px;
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      padding: 20px;
+      max-width: 900px;
       display: flex;
-      flex-direction: column;
-      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .instructions-card {
-      background: #020617;
-      border-left: 4px solid var(--accent);
-      padding: 12px 16px;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      color: #cbd5e1;
+    .title-area h1 {
+      font-size: 1.6rem;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .workspace {
+    .score-badge {
+      background: #334155;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      color: var(--gold);
+      border: 1px solid #475569;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .main-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 16px;
+      width: 100%;
+      max-width: 900px;
     }
 
     @media (min-width: 768px) {
-      .workspace {
+      .main-grid {
         grid-template-columns: 2fr 1fr;
       }
     }
 
-    .canvas-container {
+    .game-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
       position: relative;
+    }
+
+    /* Question & Verbal Interpretation */
+    .question-box {
       background: #020617;
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      border: 1px solid #334155;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    canvas {
-      display: block;
-      width: 100%;
-      height: 420px;
-    }
-
-    .controls-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      background: #0f172a;
+      border-radius: 12px;
       padding: 16px;
-      border-radius: var(--border-radius);
-      border: 1px solid #334155;
+      text-align: center;
+      border: 2px solid #334155;
     }
 
-    .control-group {
+    .question-math {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .interpretation-banner {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px dashed var(--accent);
+      color: #a7f3d0;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .step-tracker {
+      display: flex;
+      justify-content: space-around;
+      background: #0f172a;
+      padding: 8px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .step-item {
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .step-item.active {
+      background: var(--accent);
+      color: #020617;
+      font-weight: 800;
+    }
+
+    /* Interactive Mat Area */
+    .board-mat {
+      background: #020617;
+      border: 2px dashed #475569;
+      border-radius: 12px;
+      min-height: 240px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      position: relative;
     }
 
-    label {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .btn-group {
+    .group-trays-container {
       display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .group-tray {
+      background: rgba(30, 41, 59, 0.8);
+      border: 2px solid #475569;
+      border-radius: 12px;
+      padding: 10px;
+      min-width: 100px;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .group-tray-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .tray-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Chips Style */
+    .chip {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1rem;
+      color: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .chip:hover {
+      transform: scale(1.15);
+    }
+
+    .chip.red {
+      background: radial-gradient(circle at 30% 30%, #f87171, #dc2626);
+      border: 2px solid #fca5a5;
+      box-shadow: 0 0 10px var(--red-chip-glow);
+    }
+
+    .chip.blue {
+      background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb);
+      border: 2px solid #93c5fd;
+      box-shadow: 0 0 10px var(--blue-chip-glow);
+    }
+
+    .chip.neutral-pair {
+      opacity: 0.5;
+      border: 2px dashed #94a3b8;
+    }
+
+    /* Zero Bank */
+    .zero-bank-area {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 10px;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 8px;
     }
 
-    .btn {
-      flex: 1;
-      padding: 8px 10px;
-      border: 1px solid #475569;
-      background: #1e293b;
-      color: var(--text-main);
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
+    .zero-bank-title {
       font-size: 0.85rem;
-      transition: all 0.2s ease;
+      font-weight: 700;
+      color: var(--gold);
     }
 
-    .btn:hover { background: #334155; }
-    .btn.active-add { background: #15803d; border-color: #22c55e; color: white; }
-    .btn.active-remove { background: #b91c1c; border-color: #ef4444; color: white; }
-    .btn.active-proton { background: #b91c1c; border-color: #ef4444; color: white; }
-    .btn.active-electron { background: #1d4ed8; border-color: #3b82f6; color: white; }
-
-    .select-input {
-      padding: 8px 12px;
-      border-radius: 8px;
-      background: #1e293b;
-      color: white;
-      border: 1px solid #475569;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .action-btn {
+    /* Action Bar */
+    .btn-action {
       background: var(--accent);
       color: #020617;
       border: none;
-      padding: 12px;
-      font-size: 1rem;
-      font-weight: 700;
-      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 6px;
+      width: 100%;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px var(--accent-glow);
     }
 
-    .action-btn:hover { background: #34d399; }
-    .action-btn:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; }
-
-    .reset-btn {
-      background: transparent;
-      border: 1px dashed #475569;
-      color: var(--text-muted);
-      padding: 8px;
-      border-radius: 8px;
-      cursor: pointer;
+    .btn-action:hover {
+      background: #34d399;
+      transform: translateY(-2px);
     }
 
-    .equation-bar {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: var(--border-radius);
+    .btn-action:disabled {
+      background: #475569;
+      color: #94a3b8;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* Pattern Discovery Sidebar */
+    .pattern-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
       padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pattern-card h2 {
+      font-size: 1.1rem;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pattern-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .pattern-table th, .pattern-table td {
+      padding: 8px;
+      text-align: center;
+      border-bottom: 1px solid #334155;
+    }
+
+    .pattern-table th {
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .rule-unlocked {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      font-weight: 800;
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+
+    .rule-locked {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .celebration-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: var(--radius);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px;
       text-align: center;
+      z-index: 10;
     }
 
-    .equation-display {
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: 1px;
+    .celebration-title {
+      font-size: 1.8rem;
+      color: var(--gold);
+      font-weight: 900;
     }
 
-    .pos-text { color: var(--proton-color); }
-    .neg-text { color: var(--electron-color); }
-    .neutral-text { color: var(--accent); }
-
-    .explanation {
-      font-size: 0.95rem;
-      color: var(--text-muted);
+    .badge-icon {
+      font-size: 3rem;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Interactive Grouping: Integer Multiplier</h1>
-    <p class="subtitle">Grade 6: Build Equal Charge Groups to Discover Multiplication Rules</p>
+    <div class="title-area">
+      <h1>🔴🔵 Integer Chip Explorer</h1>
+    </div>
+    <div class="score-badge">
+      ⭐ Score: <span id="scoreText">0</span>
+    </div>
   </header>
 
-  <div class="container">
-    <div class="instructions-card" id="instructionsText">
-      <strong>Step 1:</strong> Select your Action (ADD or REMOVE) and Charge Type. <br>
-      <strong>Step 2:</strong> Click & Drag particles into the Group Trays to assemble equal groups before clicking Apply!
-    </div>
-
-    <div class="workspace">
-      <div class="canvas-container">
-        <canvas id="simCanvas" width="580" height="420"></canvas>
+  <div class="main-grid">
+    <!-- Interactive Game Workspace -->
+    <div class="game-card" id="gameCard">
+      <div class="step-tracker">
+        <span class="step-item active" id="stepIndicator1">1. Read Meaning</span>
+        <span class="step-item" id="stepIndicator2">2. Group Chips</span>
+        <span class="step-item" id="stepIndicator3">3. Execute & Count</span>
       </div>
 
-      <div class="controls-panel">
-        <div class="control-group">
-          <label>1. Action (Multiplier)</label>
-          <div class="btn-group">
-            <button class="btn active-add" id="btnActionAdd" onclick="setAction(1)">ADD (+)</button>
-            <button class="btn" id="btnActionRemove" onclick="setAction(-1)">REMOVE (-)</button>
-          </div>
+      <div class="question-box">
+        <div class="question-math" id="mathProblemDisplay">(+3) × (+2) = ?</div>
+        <div class="interpretation-banner" id="interpretationText">
+          👉 This means: <strong>ADD 3 groups of 2 Red Chips</strong>
         </div>
+      </div>
 
-        <div class="control-group">
-          <label>2. Number of Groups</label>
-          <select id="groupCountSelect" class="select-input" onchange="setupGroups()">
-            <option value="1">1 Group</option>
-            <option value="2">2 Groups</option>
-            <option value="3" selected>3 Groups</option>
-            <option value="4">4 Groups</option>
-          </select>
-        </div>
+      <div class="board-mat" id="boardMat">
+        <!-- Interactive Groups and Mat fill via JS -->
+      </div>
 
-        <div class="control-group">
-          <label>3. Particle Type per Group</label>
-          <div class="btn-group">
-            <button class="btn active-proton" id="btnParticleProton" onclick="setParticle(4)">Protons (+4)</button>
-            <button class="btn" id="btnParticleElectron" onclick="setParticle(-4)">Electrons (-4)</button>
-          </div>
-        </div>
+      <button class="btn-action" id="btnNextStep" onclick="handleStepAction()">
+        Start Grouping Chips ➔
+      </button>
 
-        <button class="action-btn" id="btnExecute" onclick="executeGroupedAction()">Apply Grouped Action!</button>
-        <button class="reset-btn" onclick="resetAtom()">Reset Atom to Neutral (0)</button>
+      <!-- Celebration Overlay (Hidden by default) -->
+      <div class="celebration-overlay" id="celebrationOverlay" style="display: none;">
+        <div class="badge-icon" id="celebrationIcon">🎉</div>
+        <div class="celebration-title" id="celebrationTitle">Awesome Job!</div>
+        <p id="celebrationMessage">You correctly grouped and solved the problem!</p>
+        <button class="btn-action" style="max-width: 200px;" onclick="nextQuestion()">Next Question ➔</button>
       </div>
     </div>
 
-    <div class="equation-bar">
-      <div class="equation-display" id="equationDisplay">
-        (<span class="pos-text">+3</span>) &times; (<span class="pos-text">+4</span>) = <span class="pos-text">+12</span>
-      </div>
-      <div class="explanation" id="explanationText">
-        Adding 3 groups of 4 Protons (+4) increases net charge by +12.
+    <!-- Sidebar Pattern Board -->
+    <div class="pattern-card">
+      <h2>🔍 Multiplication Rules Discovered</h2>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">
+        Solve problems to uncover the sign rules!
+      </p>
+
+      <table class="pattern-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Example</th>
+            <th>Result Sign</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pos × Pos</td>
+            <td>(+3) × (+2)</td>
+            <td id="rulePosPos" class="rule-locked">❓ Locked</td>
+          </tr>
+          <tr>
+            <td>Pos × Neg</td>
+            <td>(+3) × (-2)</td>
+            <td id="rulePosNeg" class="rule-locked">❓ Locked</td>
+          </tr>
+          <tr>
+            <td>Neg × Pos</td>
+            <td>(-3) × (+2)</td>
+            <td id="ruleNegPos" class="rule-locked">❓ Locked</td>
+          </tr>
+          <tr>
+            <td>Neg × Neg</td>
+            <td>(-3) × (-2)</td>
+            <td id="ruleNegNeg" class="rule-locked">❓ Locked</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div id="ruleSummaryBox" style="background: #020617; padding: 10px; border-radius: 8px; font-size: 0.8rem; border: 1px solid #334155; margin-top: 8px;">
+        <strong>Pattern Summary:</strong><br>
+        • Same signs = <span style="color: var(--accent);">Positive (+)</span><br>
+        • Different signs = <span style="color: var(--blue-chip);">Negative (−)</span>
       </div>
     </div>
   </div>
 
   <script>
-    // Audio Context Setup
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    // Web Audio Synthesizer
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
 
-    function playTone(freq, type = 'sine', duration = 0.15) {
-      if (!audioCtx) audioCtx = new AudioContext();
+    function playSound(type) {
+      if (!audioCtx) audioCtx = new AudioCtx();
       try {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
+
+        if (type === 'pop') {
+          osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.08);
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+        } else if (type === 'fanfare') {
+          const notes = [523.25, 659.25, 783.99, 1046.50];
+          notes.forEach((freq, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.frequency.value = freq;
+            o.connect(g); g.connect(audioCtx.destination);
+            g.gain.setValueAtTime(0.1, audioCtx.currentTime + idx * 0.1);
+            g.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.1 + 0.25);
+            o.start(audioCtx.currentTime + idx * 0.1);
+            o.stop(audioCtx.currentTime + idx * 0.1 + 0.25);
+          });
+        }
       } catch (e) {}
     }
 
-    // Canvas Setup & Drag State
-    const canvas = document.getElementById('simCanvas');
-    const ctx = canvas.getContext('2d');
+    // Question Dataset
+    const questions = [
+      { m: 3, g: 2, category: 'PosPos', text: "ADD 3 groups of 2 Red Chips (+1)" },
+      { m: 3, g: -2, category: 'PosNeg', text: "ADD 3 groups of 2 Blue Chips (-1)" },
+      { m: -3, g: 2, category: 'NegPos', text: "TAKE AWAY 3 groups of 2 Red Chips (+1)" },
+      { m: -3, g: -2, category: 'NegNeg', text: "TAKE AWAY 3 groups of 2 Blue Chips (-1)" }
+    ];
 
-    let actionSign = 1; // +1 = Add, -1 = Remove
-    let groupCount = 3;
-    let particleValue = 4; // +4 or -4
-    let isAnimating = false;
+    let currentQIndex = 0;
+    let currentStep = 1; // 1: Read/Interpret, 2: Group, 3: Count/Execute
+    let score = 0;
 
-    // Spatial boundaries
-    const atomCenter = { x: 380, y: 210 };
-    const atomRadius = 120;
+    let zeroPairsAdded = 0;
+    let assembledChipsInTrays = 0;
 
-    let atomParticles = [];
-    let draggableParticles = [];
-    let groupTrays = [];
-    let draggedParticle = null;
+    const rulesUnlocked = {
+      PosPos: false,
+      PosNeg: false,
+      NegPos: false,
+      NegNeg: false
+    };
 
-    class Particle {
-      constructor(x, y, type, isDraggable = false) {
-        this.x = x;
-        this.y = y;
-        this.type = type; // 'proton' or 'electron'
-        this.radius = 10;
-        this.isDraggable = isDraggable;
-        this.vx = (Math.random() - 0.5) * 0.6;
-        this.vy = (Math.random() - 0.5) * 0.6;
-        this.targetX = x;
-        this.targetY = y;
-        this.alpha = 1;
-        this.isRemoving = false;
-      }
+    function loadQuestion() {
+      const q = questions[currentQIndex];
+      currentStep = 1;
 
-      update() {
-        if (this.isRemoving) {
-          this.x += (this.targetX - this.x) * 0.08;
-          this.y += (this.targetY - this.y) * 0.08;
-          this.alpha -= 0.02;
-          return;
-        }
+      // Update Question Header & Interpretation Banner
+      const mStr = q.m > 0 ? `(+${q.m})` : `(${q.m})`;
+      const gStr = q.g > 0 ? `(+${q.g})` : `(${q.g})`;
+      document.getElementById('mathProblemDisplay').innerText = `${mStr} × ${gStr} = ?`;
 
-        if (!this.isDraggable) {
-          this.x += this.vx;
-          this.y += this.vy;
+      // Format clear Grade 6 Verbal Interpretation
+      const actionText = q.m > 0 ? "ADD" : "TAKE AWAY";
+      const countGroups = Math.abs(q.m);
+      const sizeChips = Math.abs(q.g);
+      const chipColor = q.g > 0 ? "Red Chips (+1)" : "Blue Chips (-1)";
 
-          const dist = Math.hypot(this.x - atomCenter.x, this.y - atomCenter.y);
-          if (dist > atomRadius - this.radius) {
-            const angle = Math.atan2(this.y - atomCenter.y, this.x - atomCenter.x);
-            this.x = atomCenter.x + Math.cos(angle) * (atomRadius - this.radius);
-            this.y = atomCenter.y + Math.sin(angle) * (atomRadius - this.radius);
-            this.vx *= -1;
-            this.vy *= -1;
-          }
-        }
-      }
+      document.getElementById('interpretationText').innerHTML = 
+        `👉 Meaning: <strong>${actionText} ${countGroups} groups of ${sizeChips} ${chipColor}</strong>`;
 
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, this.alpha);
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      updateStepIndicators();
+      renderStep1Board();
 
-        if (this.type === 'proton') {
-          ctx.fillStyle = '#ef4444';
-          ctx.shadowColor = '#ef4444';
-        } else {
-          ctx.fillStyle = '#3b82f6';
-          ctx.shadowColor = '#3b82f6';
-        }
-        ctx.shadowBlur = 6;
-        ctx.fill();
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 12px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(this.type === 'proton' ? '+' : '−', this.x, this.y);
-        ctx.restore();
-      }
+      document.getElementById('celebrationOverlay').style.display = 'none';
+      document.getElementById('btnNextStep').innerText = 'Start Grouping Chips ➔';
+      document.getElementById('btnNextStep').disabled = false;
     }
 
-    function initNeutralAtom() {
-      atomParticles = [];
-      for (let i = 0; i < 6; i++) {
-        const pPos = getRandomSpherePos();
-        atomParticles.push(new Particle(pPos.x, pPos.y, 'proton'));
-        const ePos = getRandomSpherePos();
-        atomParticles.push(new Particle(ePos.x, ePos.y, 'electron'));
-      }
+    function updateStepIndicators() {
+      document.getElementById('stepIndicator1').className = `step-item ${currentStep === 1 ? 'active' : ''}`;
+      document.getElementById('stepIndicator2').className = `step-item ${currentStep === 2 ? 'active' : ''}`;
+      document.getElementById('stepIndicator3').className = `step-item ${currentStep === 3 ? 'active' : ''}`;
     }
 
-    function getRandomSpherePos() {
-      const r = Math.random() * (atomRadius - 20);
-      const theta = Math.random() * Math.PI * 2;
-      return {
-        x: atomCenter.x + r * Math.cos(theta),
-        y: atomCenter.y + r * Math.sin(theta)
-      };
-    }
+    function renderStep1Board() {
+      const q = questions[currentQIndex];
+      const mat = document.getElementById('boardMat');
 
-    function setupGroups() {
-      if (isAnimating) return;
-      groupCount = parseInt(document.getElementById('groupCountSelect').value);
-      groupTrays = [];
-      draggableParticles = [];
-
-      const trayWidth = 110;
-      const trayHeight = 70;
-      const startY = 30;
-      const gapY = 90;
-
-      const pType = particleValue > 0 ? 'proton' : 'electron';
-
-      for (let i = 0; i < groupCount; i++) {
-        const trayX = 20;
-        const trayY = startY + i * gapY;
-        groupTrays.push({ x: trayX, y: trayY, w: trayWidth, h: trayHeight, label: `Group ${i + 1}` });
-
-        // Generate 4 particles per tray initially near tray
-        for (let j = 0; j < 4; j++) {
-          const px = trayX + 20 + (j % 2) * 25;
-          const py = trayY + 25 + Math.floor(j / 2) * 25;
-          draggableParticles.push(new Particle(px, py, pType, true));
-        }
-      }
-      updatePreviewEquation();
-    }
-
-    // Controls Handling
-    function setAction(sign) {
-      if (isAnimating) return;
-      actionSign = sign;
-      document.getElementById('btnActionAdd').className = `btn ${sign === 1 ? 'active-add' : ''}`;
-      document.getElementById('btnActionRemove').className = `btn ${sign === -1 ? 'active-remove' : ''}`;
-      setupGroups();
-    }
-
-    function setParticle(val) {
-      if (isAnimating) return;
-      particleValue = val;
-      document.getElementById('btnParticleProton').className = `btn ${val > 0 ? 'active-proton' : ''}`;
-      document.getElementById('btnParticleElectron').className = `btn ${val < 0 ? 'active-electron' : ''}`;
-      setupGroups();
-    }
-
-    function updatePreviewEquation() {
-      const multStr = actionSign > 0 ? `+${groupCount}` : `-${groupCount}`;
-      const partStr = particleValue > 0 ? `+${Math.abs(particleValue)}` : `-${Math.abs(particleValue)}`;
-      const resultVal = (actionSign * groupCount) * Math.abs(particleValue);
-      const resStr = resultVal > 0 ? `+${resultVal}` : `${resultVal}`;
-
-      const multClass = actionSign > 0 ? 'pos-text' : 'neg-text';
-      const partClass = particleValue > 0 ? 'pos-text' : 'neg-text';
-      const resClass = resultVal > 0 ? 'pos-text' : (resultVal < 0 ? 'neg-text' : 'neutral-text');
-
-      document.getElementById('equationDisplay').innerHTML = 
-        `(<span class="${multClass}">${multStr}</span>) &times; (<span class="${partClass}">${partStr}</span>) = <span class="${resClass}">${resStr}</span>`;
-
-      let exp = "";
-      if (actionSign > 0 && particleValue > 0) exp = `Adding ${groupCount} groups of +4 Protons increases net charge by +${resultVal}.`;
-      else if (actionSign > 0 && particleValue < 0) exp = `Adding ${groupCount} groups of -4 Electrons decreases net charge to ${resultVal}.`;
-      else if (actionSign < 0 && particleValue > 0) exp = `Removing ${groupCount} groups of +4 Protons leaves excess negative charge, making net charge ${resultVal}.`;
-      else exp = `Removing ${groupCount} groups of -4 Electrons removes negative weight, making net charge jump to +${resultVal}!`;
-
-      document.getElementById('explanationText').innerText = exp;
-    }
-
-    // Drag and Drop Logic
-    canvas.addEventListener('mousedown', (e) => {
-      if (isAnimating) return;
-      const rect = canvas.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-
-      draggableParticles.forEach(p => {
-        const dist = Math.hypot(p.x - mouseX, p.y - mouseY);
-        if (dist < p.radius + 5) {
-          draggedParticle = p;
-        }
-      });
-    });
-
-    canvas.addEventListener('mousemove', (e) => {
-      if (draggedParticle) {
-        const rect = canvas.getBoundingClientRect();
-        draggedParticle.x = e.clientX - rect.left;
-        draggedParticle.y = e.clientY - rect.top;
-      }
-    });
-
-    canvas.addEventListener('mouseup', () => {
-      if (draggedParticle) {
-        playTone(500, 'sine', 0.05);
-        draggedParticle = null;
-      }
-    });
-
-    function executeGroupedAction() {
-      if (isAnimating) return;
-      isAnimating = true;
-      document.getElementById('btnExecute').disabled = true;
-
-      const targetType = particleValue > 0 ? 'proton' : 'electron';
-      const totalCount = groupCount * 4;
-
-      if (actionSign > 0) {
-        // Animate grouped particles moving INTO atom
-        let index = 0;
-        const interval = setInterval(() => {
-          if (index < draggableParticles.length) {
-            const p = draggableParticles[index];
-            const targetPos = getRandomSpherePos();
-            p.isDraggable = false;
-            p.x = targetPos.x;
-            p.y = targetPos.y;
-            atomParticles.push(p);
-            playTone(targetType === 'proton' ? 480 : 240, 'sine');
-            index++;
-          } else {
-            clearInterval(interval);
-            draggableParticles = [];
-            finishExecution();
-          }
-        }, 80);
+      if (q.m > 0) {
+        mat.innerHTML = `
+          <div style="text-align: center; color: var(--text-muted);">
+            <p>Ready to add positive groups to the board!</p>
+            <p style="font-size: 0.9rem; margin-top: 6px;">Click the button below to assemble your groups.</p>
+          </div>
+        `;
       } else {
-        // REMOVE: Animate particles sucking OUT of atom
-        const matching = atomParticles.filter(p => p.type === targetType && !p.isRemoving);
-        const toRemove = Math.min(totalCount, matching.length);
-
-        let removed = 0;
-        const interval = setInterval(() => {
-          if (removed < toRemove) {
-            const p = matching[removed];
-            p.isRemoving = true;
-            p.targetX = -50;
-            p.targetY = p.y;
-            playTone(targetType === 'proton' ? 300 : 580, 'triangle');
-            removed++;
-          } else {
-            clearInterval(interval);
-            setTimeout(() => {
-              atomParticles = atomParticles.filter(p => !p.isRemoving || p.alpha > 0);
-              finishExecution();
-            }, 300);
-          }
-        }, 80);
+        // Multiplier is negative -> Needs Zero Pairs Bank!
+        mat.innerHTML = `
+          <div style="text-align: center; color: var(--gold); margin-bottom: 8px;">
+            ⚠️ <strong>Board is empty (0)!</strong> To TAKE AWAY chips, we first need Zero Pairs!
+          </div>
+          <div class="zero-bank-area">
+            <div class="zero-bank-title">Zero Bank (+1 and -1 = 0)</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Click to add Zero Pairs until you have enough chips to remove!</p>
+            <button class="btn-action" style="padding: 6px 16px; font-size: 0.9rem; width: auto;" onclick="addZeroPair()">+ Add Zero Pair</button>
+            <div id="zeroPairsContainer" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 8px;"></div>
+          </div>
+        `;
       }
     }
 
-    function finishExecution() {
-      isAnimating = false;
-      document.getElementById('btnExecute').disabled = false;
-      playTone(660, 'square', 0.2);
+    function addZeroPair() {
+      zeroPairsAdded++;
+      playSound('pop');
+      const container = document.getElementById('zeroPairsContainer');
+      const pairDiv = document.createElement('div');
+      pairDiv.style.display = 'flex';
+      pairDiv.style.gap = '4px';
+      pairDiv.style.background = 'rgba(255,255,255,0.05)';
+      pairDiv.style.padding = '4px';
+      pairDiv.style.borderRadius = '20px';
+
+      pairDiv.innerHTML = `
+        <div class="chip red">+</div>
+        <div class="chip blue">−</div>
+      `;
+      container.appendChild(pairDiv);
     }
 
-    function resetAtom() {
-      if (isAnimating) return;
-      initNeutralAtom();
-      setupGroups();
+    function handleStepAction() {
+      const q = questions[currentQIndex];
+
+      if (currentStep === 1) {
+        // Move to Grouping Step
+        currentStep = 2;
+        updateStepIndicators();
+        renderGroupingBoard();
+        document.getElementById('btnNextStep').innerText = q.m > 0 ? 'Place Groups on Board ➔' : 'Take Away Groups ➔';
+      } else if (currentStep === 2) {
+        // Move to Execution / Final Answer
+        currentStep = 3;
+        updateStepIndicators();
+        executeAndSolve();
+      }
     }
 
-    // Render Loop
-    function render() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function renderGroupingBoard() {
+      const q = questions[currentQIndex];
+      const mat = document.getElementById('boardMat');
+      const numGroups = Math.abs(q.m);
+      const groupSize = Math.abs(q.g);
+      const isRed = q.g > 0;
 
-      // Draw Group Trays
-      groupTrays.forEach(tray => {
-        ctx.fillStyle = 'rgba(30, 41, 59, 0.7)';
-        ctx.strokeStyle = '#475569';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(tray.x, tray.y, tray.w, tray.h);
-        ctx.fillRect(tray.x, tray.y, tray.w, tray.h);
+      let html = `<div class="group-trays-container">`;
 
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = 'bold 11px sans-serif';
-        ctx.fillText(tray.label, tray.x + 8, tray.y + 16);
-      });
+      for (let i = 0; i < numGroups; i++) {
+        html += `
+          <div class="group-tray">
+            <div class="group-tray-title">Group ${i + 1}</div>
+            <div class="tray-chips">
+        `;
+        for (let j = 0; j < groupSize; j++) {
+          html += `<div class="chip ${isRed ? 'red' : 'blue'}">${isRed ? '+' : '−'}</div>`;
+        }
+        html += `</div></div>`;
+      }
 
-      // Calculate Net Charge
-      const activeProtons = atomParticles.filter(p => p.type === 'proton' && !p.isRemoving).length;
-      const activeElectrons = atomParticles.filter(p => p.type === 'electron' && !p.isRemoving).length;
-      const net = activeProtons - activeElectrons;
-
-      // Draw Atom Sphere
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(atomCenter.x, atomCenter.y, atomRadius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-      ctx.fill();
-      ctx.lineWidth = 3;
-
-      if (net > 0) { ctx.strokeStyle = '#ef4444'; ctx.shadowColor = '#ef4444'; }
-      else if (net < 0) { ctx.strokeStyle = '#3b82f6'; ctx.shadowColor = '#3b82f6'; }
-      else { ctx.strokeStyle = '#10b981'; ctx.shadowColor = '#10b981'; }
-      ctx.shadowBlur = 12;
-      ctx.stroke();
-      ctx.restore();
-
-      // Draw Charge Gauge
-      drawMeter(net);
-
-      // Draw Particles inside Atom
-      atomParticles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-
-      // Draw Draggable Grouping Particles
-      draggableParticles.forEach(p => p.draw());
-
-      requestAnimationFrame(render);
+      html += `</div>`;
+      mat.innerHTML = html;
+      playSound('pop');
     }
 
-    function drawMeter(netCharge) {
-      const meterX = 520;
-      const meterY = 60;
-      const meterWidth = 20;
-      const meterHeight = 280;
+    function executeAndSolve() {
+      const q = questions[currentQIndex];
+      const result = q.m * q.g;
+      const isPositive = result > 0;
 
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(meterX, meterY, meterWidth, meterHeight);
-      ctx.strokeStyle = '#475569';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(meterX, meterY, meterWidth, meterHeight);
+      playSound('fanfare');
+      score += 10;
+      document.getElementById('scoreText').innerText = score;
 
-      const zeroY = meterY + meterHeight / 2;
-      ctx.strokeStyle = '#94a3b8';
-      ctx.beginPath();
-      ctx.moveTo(meterX - 4, zeroY); ctx.lineTo(meterX + meterWidth + 4, zeroY);
-      ctx.stroke();
+      // Unlock Rule in Sidebar
+      rulesUnlocked[q.category] = true;
+      const ruleElem = document.getElementById(`rule${q.category}`);
+      ruleElem.className = 'rule-unlocked';
+      ruleElem.innerText = isPositive ? '➕ Positive (+)' : '➖ Negative (−)';
 
-      const maxVal = 20;
-      const clampedNet = Math.max(-maxVal, Math.min(maxVal, netCharge));
-      const fillHeight = (clampedNet / maxVal) * (meterHeight / 2);
-
-      ctx.fillStyle = netCharge >= 0 ? '#ef4444' : '#3b82f6';
-      ctx.fillRect(meterX + 2, zeroY, meterWidth - 4, -fillHeight);
-
-      ctx.fillStyle = '#f8fafc';
-      ctx.font = 'bold 12px sans-serif';
-      ctx.textAlign = 'center';
-      const netStr = netCharge > 0 ? `+${netCharge}` : `${netCharge}`;
-      ctx.fillText(`Net: ${netStr}`, meterX + 10, meterY - 12);
+      // Show Celebration Overlay
+      const overlay = document.getElementById('celebrationOverlay');
+      document.getElementById('celebrationTitle').innerText = isPositive ? "Result is Positive (+)" : "Result is Negative (−)";
+      document.getElementById('celebrationMessage').innerHTML = `
+        <strong>${q.m > 0 ? 'Added' : 'Took away'} ${Math.abs(q.m)} groups of ${Math.abs(q.g)} ${q.g > 0 ? 'Red' : 'Blue'} chips.</strong><br>
+        Final Answer: <span style="font-size: 1.4rem; color: var(--gold);">${result > 0 ? '+' + result : result}</span>
+      `;
+      overlay.style.display = 'flex';
     }
 
-    // Initialize
-    initNeutralAtom();
-    setupGroups();
-    render();
+    function nextQuestion() {
+      currentQIndex = (currentQIndex + 1) % questions.length;
+      zeroPairsAdded = 0;
+      loadQuestion();
+    }
+
+    // Initialize Game
+    loadQuestion();
   </script>
 </body>
 </html>
