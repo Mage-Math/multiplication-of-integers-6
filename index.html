@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chip Multiplication: Pattern Explorer for Grade 6</title>
+  <title>Grade 6 Integer Multiplication: Interactive Chip Model Activity</title>
   <style>
     :root {
-      --bg: #0f172a;
+      --bg-dark: #0f172a;
       --card-bg: #1e293b;
-      --text: #f8fafc;
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --red-chip: #ef4444;
-      --red-chip-glow: rgba(239, 68, 68, 0.4);
+      --red-glow: rgba(239, 68, 68, 0.4);
       --blue-chip: #3b82f6;
-      --blue-chip-glow: rgba(59, 130, 246, 0.4);
+      --blue-glow: rgba(59, 130, 246, 0.4);
       --accent: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.4);
+      --accent-glow: rgba(16, 185, 129, 0.3);
       --gold: #f59e0b;
       --radius: 16px;
     }
@@ -29,8 +29,8 @@
     }
 
     body {
-      background-color: var(--bg);
-      color: var(--text);
+      background-color: var(--bg-dark);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -39,21 +39,20 @@
     }
 
     header {
-      text-align: center;
-      margin-bottom: 12px;
       width: 100%;
-      max-width: 900px;
+      max-width: 950px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 16px;
     }
 
-    .title-area h1 {
+    h1 {
       font-size: 1.6rem;
       color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .score-badge {
@@ -64,30 +63,27 @@
       color: var(--gold);
       border: 1px solid #475569;
       font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    .main-grid {
+    .container {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: 20px;
       width: 100%;
-      max-width: 900px;
+      max-width: 950px;
     }
 
-    @media (min-width: 768px) {
-      .main-grid {
+    @media (min-width: 800px) {
+      .container {
         grid-template-columns: 2fr 1fr;
       }
     }
 
-    .game-card {
+    .main-game-card {
       background: var(--card-bg);
       border-radius: var(--radius);
       padding: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       border: 1px solid #334155;
       display: flex;
       flex-direction: column;
@@ -95,8 +91,8 @@
       position: relative;
     }
 
-    /* Question & Verbal Interpretation */
-    .question-box {
+    /* Question Box & Visual Interpretation Banner */
+    .question-card {
       background: #020617;
       border-radius: 12px;
       padding: 16px;
@@ -108,50 +104,26 @@
       font-size: 2.2rem;
       font-weight: 900;
       letter-spacing: 2px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .interpretation-banner {
       background: rgba(16, 185, 129, 0.15);
       border: 1px dashed var(--accent);
       color: #a7f3d0;
-      padding: 8px 12px;
+      padding: 10px 14px;
       border-radius: 8px;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 700;
       display: inline-block;
-      margin-top: 4px;
-    }
-
-    .step-tracker {
-      display: flex;
-      justify-content: space-around;
-      background: #0f172a;
-      padding: 8px;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .step-item {
-      padding: 4px 10px;
-      border-radius: 6px;
-      transition: all 0.3s ease;
-    }
-
-    .step-item.active {
-      background: var(--accent);
-      color: #020617;
-      font-weight: 800;
     }
 
     /* Interactive Mat Area */
-    .board-mat {
+    .mat-area {
       background: #020617;
       border: 2px dashed #475569;
       border-radius: 12px;
-      min-height: 240px;
+      min-height: 260px;
       padding: 16px;
       display: flex;
       flex-direction: column;
@@ -164,7 +136,7 @@
     .group-trays-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
       justify-content: center;
       width: 100%;
     }
@@ -174,16 +146,15 @@
       border: 2px solid #475569;
       border-radius: 12px;
       padding: 10px;
-      min-width: 100px;
-      min-height: 80px;
+      min-width: 110px;
+      min-height: 90px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      position: relative;
     }
 
-    .group-tray-title {
+    .tray-title {
       font-size: 0.75rem;
       color: var(--text-muted);
       font-weight: 700;
@@ -197,21 +168,20 @@
       justify-content: center;
     }
 
-    /* Chips Style */
+    /* Chip Styling */
     .chip {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: white;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
     }
 
     .chip:hover {
@@ -221,26 +191,21 @@
     .chip.red {
       background: radial-gradient(circle at 30% 30%, #f87171, #dc2626);
       border: 2px solid #fca5a5;
-      box-shadow: 0 0 10px var(--red-chip-glow);
+      box-shadow: 0 0 10px var(--red-glow);
     }
 
     .chip.blue {
       background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb);
       border: 2px solid #93c5fd;
-      box-shadow: 0 0 10px var(--blue-chip-glow);
+      box-shadow: 0 0 10px var(--blue-glow);
     }
 
-    .chip.neutral-pair {
-      opacity: 0.5;
-      border: 2px dashed #94a3b8;
-    }
-
-    /* Zero Bank */
-    .zero-bank-area {
+    /* Zero Bank Area */
+    .zero-bank {
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid #334155;
       border-radius: 10px;
-      padding: 10px;
+      padding: 12px;
       width: 100%;
       text-align: center;
       display: flex;
@@ -255,12 +220,11 @@
       color: var(--gold);
     }
 
-    /* Action Bar */
     .btn-action {
       background: var(--accent);
       color: #020617;
       border: none;
-      padding: 12px 20px;
+      padding: 14px 20px;
       font-size: 1.1rem;
       font-weight: 800;
       border-radius: 10px;
@@ -283,19 +247,19 @@
       transform: none;
     }
 
-    /* Pattern Discovery Sidebar */
-    .pattern-card {
+    /* Pattern Discovery Board Sidebar */
+    .sidebar-card {
       background: var(--card-bg);
       border-radius: var(--radius);
       padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       border: 1px solid #334155;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    .pattern-card h2 {
+    .sidebar-card h2 {
       font-size: 1.1rem;
       color: var(--gold);
       display: flex;
@@ -353,61 +317,49 @@
       color: var(--gold);
       font-weight: 900;
     }
-
-    .badge-icon {
-      font-size: 3rem;
-    }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="title-area">
-      <h1>🔴🔵 Integer Chip Explorer</h1>
-    </div>
+    <h1>🔴🔵 Integer Chip Explorer</h1>
     <div class="score-badge">
       ⭐ Score: <span id="scoreText">0</span>
     </div>
   </header>
 
-  <div class="main-grid">
-    <!-- Interactive Game Workspace -->
-    <div class="game-card" id="gameCard">
-      <div class="step-tracker">
-        <span class="step-item active" id="stepIndicator1">1. Read Meaning</span>
-        <span class="step-item" id="stepIndicator2">2. Group Chips</span>
-        <span class="step-item" id="stepIndicator3">3. Execute & Count</span>
-      </div>
-
-      <div class="question-box">
+  <div class="container">
+    <!-- Main Interactive Activity Workspace -->
+    <div class="main-game-card">
+      <div class="question-card">
         <div class="question-math" id="mathProblemDisplay">(+3) × (+2) = ?</div>
         <div class="interpretation-banner" id="interpretationText">
-          👉 This means: <strong>ADD 3 groups of 2 Red Chips</strong>
+          👉 Meaning: <strong>ADD 3 groups of 2 Red Chips (+1)</strong>
         </div>
       </div>
 
-      <div class="board-mat" id="boardMat">
-        <!-- Interactive Groups and Mat fill via JS -->
+      <div class="mat-area" id="boardMat">
+        <!-- Interactive Group Trays & Zero Bank Rendered Here -->
       </div>
 
       <button class="btn-action" id="btnNextStep" onclick="handleStepAction()">
         Start Grouping Chips ➔
       </button>
 
-      <!-- Celebration Overlay (Hidden by default) -->
+      <!-- Celebration Overlay -->
       <div class="celebration-overlay" id="celebrationOverlay" style="display: none;">
-        <div class="badge-icon" id="celebrationIcon">🎉</div>
+        <div style="font-size: 3rem;">🎉</div>
         <div class="celebration-title" id="celebrationTitle">Awesome Job!</div>
         <p id="celebrationMessage">You correctly grouped and solved the problem!</p>
         <button class="btn-action" style="max-width: 200px;" onclick="nextQuestion()">Next Question ➔</button>
       </div>
     </div>
 
-    <!-- Sidebar Pattern Board -->
-    <div class="pattern-card">
-      <h2>🔍 Multiplication Rules Discovered</h2>
+    <!-- Rule Discovery Sidebar -->
+    <div class="sidebar-card">
+      <h2>🔍 Pattern Discovery Board</h2>
       <p style="font-size: 0.8rem; color: var(--text-muted);">
-        Solve problems to uncover the sign rules!
+        Solve problems to uncover integer sign rules!
       </p>
 
       <table class="pattern-table">
@@ -415,7 +367,7 @@
           <tr>
             <th>Type</th>
             <th>Example</th>
-            <th>Result Sign</th>
+            <th>Result</th>
           </tr>
         </thead>
         <tbody>
@@ -442,8 +394,8 @@
         </tbody>
       </table>
 
-      <div id="ruleSummaryBox" style="background: #020617; padding: 10px; border-radius: 8px; font-size: 0.8rem; border: 1px solid #334155; margin-top: 8px;">
-        <strong>Pattern Summary:</strong><br>
+      <div style="background: #020617; padding: 10px; border-radius: 8px; font-size: 0.8rem; border: 1px solid #334155; margin-top: 8px;">
+        <strong>Pattern Rules:</strong><br>
         • Same signs = <span style="color: var(--accent);">Positive (+)</span><br>
         • Different signs = <span style="color: var(--blue-chip);">Negative (−)</span>
       </div>
@@ -451,7 +403,7 @@
   </div>
 
   <script>
-    // Web Audio Synthesizer
+    // Audio Synthesizer
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
 
@@ -460,8 +412,7 @@
       try {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        osc.connect(gain); gain.connect(audioCtx.destination);
 
         if (type === 'pop') {
           osc.frequency.setValueAtTime(400, audioCtx.currentTime);
@@ -485,58 +436,38 @@
       } catch (e) {}
     }
 
-    // Question Dataset
     const questions = [
-      { m: 3, g: 2, category: 'PosPos', text: "ADD 3 groups of 2 Red Chips (+1)" },
-      { m: 3, g: -2, category: 'PosNeg', text: "ADD 3 groups of 2 Blue Chips (-1)" },
-      { m: -3, g: 2, category: 'NegPos', text: "TAKE AWAY 3 groups of 2 Red Chips (+1)" },
-      { m: -3, g: -2, category: 'NegNeg', text: "TAKE AWAY 3 groups of 2 Blue Chips (-1)" }
+      { m: 3, g: 2, category: 'PosPos' },
+      { m: 3, g: -2, category: 'PosNeg' },
+      { m: -3, g: 2, category: 'NegPos' },
+      { m: -3, g: -2, category: 'NegNeg' }
     ];
 
     let currentQIndex = 0;
-    let currentStep = 1; // 1: Read/Interpret, 2: Group, 3: Count/Execute
+    let currentStep = 1; // 1: Interpret, 2: Grouping, 3: Solve
     let score = 0;
-
     let zeroPairsAdded = 0;
-    let assembledChipsInTrays = 0;
 
-    const rulesUnlocked = {
-      PosPos: false,
-      PosNeg: false,
-      NegPos: false,
-      NegNeg: false
-    };
+    const rulesUnlocked = { PosPos: false, PosNeg: false, NegPos: false, NegNeg: false };
 
     function loadQuestion() {
       const q = questions[currentQIndex];
       currentStep = 1;
 
-      // Update Question Header & Interpretation Banner
       const mStr = q.m > 0 ? `(+${q.m})` : `(${q.m})`;
       const gStr = q.g > 0 ? `(+${q.g})` : `(${q.g})`;
       document.getElementById('mathProblemDisplay').innerText = `${mStr} × ${gStr} = ?`;
 
-      // Format clear Grade 6 Verbal Interpretation
       const actionText = q.m > 0 ? "ADD" : "TAKE AWAY";
-      const countGroups = Math.abs(q.m);
-      const sizeChips = Math.abs(q.g);
       const chipColor = q.g > 0 ? "Red Chips (+1)" : "Blue Chips (-1)";
 
       document.getElementById('interpretationText').innerHTML = 
-        `👉 Meaning: <strong>${actionText} ${countGroups} groups of ${sizeChips} ${chipColor}</strong>`;
+        `👉 Meaning: <strong>${actionText} ${Math.abs(q.m)} groups of ${Math.abs(q.g)} ${chipColor}</strong>`;
 
-      updateStepIndicators();
       renderStep1Board();
 
       document.getElementById('celebrationOverlay').style.display = 'none';
       document.getElementById('btnNextStep').innerText = 'Start Grouping Chips ➔';
-      document.getElementById('btnNextStep').disabled = false;
-    }
-
-    function updateStepIndicators() {
-      document.getElementById('stepIndicator1').className = `step-item ${currentStep === 1 ? 'active' : ''}`;
-      document.getElementById('stepIndicator2').className = `step-item ${currentStep === 2 ? 'active' : ''}`;
-      document.getElementById('stepIndicator3').className = `step-item ${currentStep === 3 ? 'active' : ''}`;
     }
 
     function renderStep1Board() {
@@ -546,19 +477,17 @@
       if (q.m > 0) {
         mat.innerHTML = `
           <div style="text-align: center; color: var(--text-muted);">
-            <p>Ready to add positive groups to the board!</p>
+            <p>Ready to add groups to the mat!</p>
             <p style="font-size: 0.9rem; margin-top: 6px;">Click the button below to assemble your groups.</p>
           </div>
         `;
       } else {
-        // Multiplier is negative -> Needs Zero Pairs Bank!
         mat.innerHTML = `
           <div style="text-align: center; color: var(--gold); margin-bottom: 8px;">
-            ⚠️ <strong>Board is empty (0)!</strong> To TAKE AWAY chips, we first need Zero Pairs!
+            ⚠️ <strong>Board is empty (0)!</strong> To TAKE AWAY chips, bring in Zero Pairs first!
           </div>
-          <div class="zero-bank-area">
+          <div class="zero-bank">
             <div class="zero-bank-title">Zero Bank (+1 and -1 = 0)</div>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Click to add Zero Pairs until you have enough chips to remove!</p>
             <button class="btn-action" style="padding: 6px 16px; font-size: 0.9rem; width: auto;" onclick="addZeroPair()">+ Add Zero Pair</button>
             <div id="zeroPairsContainer" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 8px;"></div>
           </div>
@@ -588,15 +517,11 @@
       const q = questions[currentQIndex];
 
       if (currentStep === 1) {
-        // Move to Grouping Step
         currentStep = 2;
-        updateStepIndicators();
         renderGroupingBoard();
         document.getElementById('btnNextStep').innerText = q.m > 0 ? 'Place Groups on Board ➔' : 'Take Away Groups ➔';
       } else if (currentStep === 2) {
-        // Move to Execution / Final Answer
         currentStep = 3;
-        updateStepIndicators();
         executeAndSolve();
       }
     }
@@ -613,7 +538,7 @@
       for (let i = 0; i < numGroups; i++) {
         html += `
           <div class="group-tray">
-            <div class="group-tray-title">Group ${i + 1}</div>
+            <div class="tray-title">Group ${i + 1}</div>
             <div class="tray-chips">
         `;
         for (let j = 0; j < groupSize; j++) {
@@ -636,13 +561,11 @@
       score += 10;
       document.getElementById('scoreText').innerText = score;
 
-      // Unlock Rule in Sidebar
       rulesUnlocked[q.category] = true;
       const ruleElem = document.getElementById(`rule${q.category}`);
       ruleElem.className = 'rule-unlocked';
       ruleElem.innerText = isPositive ? '➕ Positive (+)' : '➖ Negative (−)';
 
-      // Show Celebration Overlay
       const overlay = document.getElementById('celebrationOverlay');
       document.getElementById('celebrationTitle').innerText = isPositive ? "Result is Positive (+)" : "Result is Negative (−)";
       document.getElementById('celebrationMessage').innerHTML = `
@@ -658,7 +581,6 @@
       loadQuestion();
     }
 
-    // Initialize Game
     loadQuestion();
   </script>
 </body>
